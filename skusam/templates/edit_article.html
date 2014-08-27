@@ -1,0 +1,15 @@
+{% if article.id %}
+<h1>Edit Article</h1>
+{% else %}
+<h1>Add Article</h1>
+{% endif %}
+
+<form action="{{ action }}" method="POST">
+  {% csrf_token %}
+  <ul>
+    {{ form.as_ul }}
+  </ul>
+  <input id="save_article" type="submit" value="Save" author=user/>
+</form>
+
+<a href="{% url "profil-list" %}">back to list</a>

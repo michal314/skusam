@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+<h1>Title: {{ article.title }}</h1>
+{% endblock title %}
+{% block content %}
+
+<article> Important tags of article:
+	<ul>
+		{% for tag in article.tags.all %}
+		<li>
+			<a href="{%  url 'tag_detail' tag.title %}">#{{tag.title}}</a>
+		</li>
+		{% endfor %}
+	</ul> 
+	<footer>
+		<ul>{{article.content}}</ul>
+		{{article.pub_date}} 
+		 by user <a href="{% url 'view_author' article.author.username %}">{{article.author.username}}</a>
+	</footer>
+</article>
+
+</article>
+{% endblock content %}

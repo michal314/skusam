@@ -1,0 +1,26 @@
+{%extends "base.html" %}
+{% block body_block %}
+<div class="hero-unit">
+
+<font face='arial'  color='royalblue'><h2>Account balance </h2> </font>
+
+     
+<ul> You have 0 credits. </ul>
+
+
+<ul> 
+<form action="{% url "accountbalance-edit"  pk=user.id  %}" method='get'>
+<button type='submit' class="btn btn-primary"> You can increase tha account balance  now! </button>
+</form>
+</ul> 
+ 
+
+
+<a href="{% url "frontpage"   %}">back to my account</a>
+</div>
+
+        
+     
+    
+{% endblock %}
+

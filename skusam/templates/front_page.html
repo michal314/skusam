@@ -1,0 +1,28 @@
+{%extends "base.html" %}
+
+{% block body_block %}
+
+<div class="hero-unit">
+	{% if user.is_authenticated %}
+	<h1> Hello {{ user.username }}! </h1>
+  <li><a href="{% url "personalprofil-list"  pk=user.id  %}">My personal profile</a> </li> 
+  <li><a href="/rango/account/userprofile/">User profile</a></li> 
+  <li><a href="{% url "password-edit"  pk=user.id  %}">Change password</a> </li> 
+  <li><a href="{% url "usergroups-list"  pk=user.id  %}">Groups</a></li> 
+  <li><a href="{% url "accountbalance-list"  pk=user.id  %}">Account balance</a> </li> 
+  
+	{%else %}
+    <h1>Welcome to our site</h1>
+    <p><font color='crimson'><Center><Q>"Dear Math, <BR>I Don't want to Solve Your Problems, <BR>I Have My Own to Solve." </Q> </center></font></p>
+    {% endif %}
+</div>
+
+  {% if user.is_authenticated %}
+
+  {%else %}
+
+    
+        
+<font face='arial' size="+2" color='royalblue'><P>I'd like you to invite on my website dedicated to mathematical problems :) Since I deal with different areas of mathematics for several years, I know that a lot of students have greate problems with one. On this website you can find various materials from many branches of the Mathematics as algebra, geometry, number theory, logic, graph theory.  Moreover, there is a forum for yours questions and important remarks.</P></font>
+ {% endif %}
+{% endblock %}

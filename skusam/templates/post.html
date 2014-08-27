@@ -1,0 +1,20 @@
+{% block title %}
+<h1>{{post.content}}</h1>
+{% endblock title %}
+
+{% block content %}
+<article>
+	Titulok: {{post.content}}
+	<ul> Important tags:
+		{% for tag in tags %}
+		<li>
+			<a href="{%  url 'view_tag' tag.title %}">#{{tag.title}}</a>
+		</li>
+		{% endfor %}
+	</ul> 
+	<footer>
+		{{post.pub_date}}
+		<a href="{% url 'view_author' post.author.username %}">{{post.author.username}}</a>
+	</footer>
+</article>
+{% endblock content %}

@@ -1,0 +1,45 @@
+{%extends "base.html" %}
+{% block content %}
+<h1>Info about me</h1>
+
+<ul>
+  
+    <li class="user">Nick name: {{ user.username }}
+        
+   </li>
+
+    <li class="user">Firts name: {{user.first_name}}
+       
+   </li>
+
+
+    <li class="user">Last name: {{ user.last_name }}
+       
+   </li>
+  
+    <li 
+       class="user">Email address: {{ user.email}}
+    </li>
+        <li 
+       class="user">{{ user.groups.filter }}
+    </li>
+</ul>
+
+<a href="{% url "profil-edit"  pk=user.id  %}">edit profil</a> <a href="{% url "django.contrib.auth.views.logout"  %}">logout</a>
+
+
+<h1>Articles written by me</h1>
+
+
+<ul>
+	{% for article in user.article_set.all %}
+	<li>
+		<a href="{% url 'article_detail' article.id %}">{{article.title}}</a>
+    (<a href="{% url "article-edit" pk=article.id %}">edit</a>)
+    (<a href="{% url "article-delete" pk=article.id %}">delete</a>)
+	</li>
+	{% endfor %}
+</ul>
+<a href="{% url "article-new" %}">add article</a>  
+{% endblock %}
+

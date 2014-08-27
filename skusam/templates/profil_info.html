@@ -1,0 +1,75 @@
+{%extends "base.html" %}
+{% block body_block %}
+<div class="hero-unit">
+
+<font face='arial'  color='royalblue'><h2>My personal profile</h2> </font>
+
+  <font face='arial'  color='royalblue'><h3>Contact information:</h3> </font>
+
+<ul> 
+   
+
+    <h4 class="user">Nick name: {{ user.username }}
+        
+   </h4>
+
+    <h4 class="user">Firts name: {{user.first_name}}
+       
+   </h4>
+
+
+    <h4 class="user">Surname: {{ user.last_name }}
+       
+   </h4>
+  
+    <h4 
+       class="user">E-mail: {{ user.email}}
+    </h4>
+
+
+<ul>
+
+<form action="{% url "personalprofil-edit"  pk=user.id  %}" method='get'>
+<button type='submit' class="btn btn-primary"> edit profile </button>
+</form>
+</ul> </ul>
+
+
+<font face='arial'  color='royalblue'><h3>Address:</h3></font>
+
+
+<ul> 
+    <h4 class="user">Street: {{ user.address.address}}
+        
+   </h4>
+
+
+
+  
+    <h4 class="user">City: {{ user.address.city}}
+       
+   </h4>
+
+
+    <h4 class="user">Zip: {{ user.address.zip}}
+       
+   </h4>
+  
+    <h4 
+       class="user">Country: {{ user.address.state}}
+    </h4>
+
+<ul>
+
+<form action="{% url "address-edit"  pk=user.id  %}" method='get'>
+<button type='submit' class="btn btn-primary"> edit address </button>
+</form>
+</ul></ul>
+<a href="{% url "frontpage"   %}">back to my account</a>
+</div>
+
+        
+    
+    
+{% endblock %}
+

@@ -23,6 +23,9 @@ def user_logout(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect('/rango/')
 
+def problems(request):
+    return render(request,'problem_list.html',{})    
+
 def study(request):
      # Obtain the context from the HTTP request.
     context = RequestContext(request)
@@ -41,7 +44,7 @@ def study(request):
     return render_to_response('study_list.html', context_dict, context)
 
 
-def front(request):
+def accountprofile(request):
      # Obtain the context from the HTTP request.
     context = RequestContext(request)
 
@@ -57,6 +60,23 @@ def front(request):
 
     # Render the response and return to the client.
     return render_to_response('front_page.html', context_dict, context)
+
+def front(request):
+     # Obtain the context from the HTTP request.
+    context = RequestContext(request)
+
+    # Query for categories - add the list to our context dictionary.
+    category_list = Category.objects.all()
+    context_dict = {'categories': category_list}
+
+    # The following two lines are new.
+    # We loop through each category returned, and create a URL attribute.
+    # This attribute stores an encoded URL (e.g. spaces replaced with underscores).
+    for category in category_list:
+        category.url = category.name.replace(' ', '_')
+
+    # Render the response and return to the client.
+    return render_to_response('index.html', context_dict, context)
 def register(request):
     # Like before, get the request's context.
     context = RequestContext(request)

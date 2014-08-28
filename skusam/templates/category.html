@@ -4,8 +4,15 @@
     <div class="hero-unit">
         <h1>{{ category_name }}</h1>
     </div>
+           Articles
+           <ul>
+                {% for artic in category.article_set.all %}
+                <li><a href="{% url "article-view" pk=artic.id category_name_url=category.name %}">{{ artic.title }}</a></li>
+                {% endfor %}
+            </ul>
+       
         {% if category %}
-            {% if pages %}
+            {% if pages %} Pages
             <ul>
                 {% for page in pages %}
                 <li><a href="{{ page.url }}">{{ page.title }}</a></li>

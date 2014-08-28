@@ -2,51 +2,14 @@
 {%extends 'base.html' %}
 
 {% block body_block %}
+
 <div class="hero-unit">
-    <h1>Ready to Rango</h1>
-    <p>Find, Add, Share and Rango useful links and resources.</p>
+  
+    <h1>Welcome to our site</h1>
+    <p><font color='crimson'><Center><Q>"Dear Math, <BR>I Don't want to Solve Your Problems, <BR>I Have My Own to Solve." </Q> </center></font></p>
+   
 </div>
 
-  {% if categories %}
-            <ul>
-                {% for category in categories %}
-                <li>{{ category.name }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no categories present.</strong>
-        {% endif %}
+<font face='arial' size="+2" color='royalblue'><p>I'd like you to invite on my website dedicated to mathematical problems :) Since I deal with different areas of mathematics for several years, I know that a lot of students have greate problems with one. On this website you can find various materials from many branches of the Mathematics as algebra, geometry, number theory, logic, graph theory.  Moreover, there is a forum for yours questions and important remarks.</p></font>
 
-
-<div class="row-fluid">
-    <div class="span6">
-        <h2>Top Five Categories</h2>
-        {% if categories %}
-        <ul>
-            {% for category in categories %}
-            <li><a href="/rango/category/{{ category.url }}">{{ category.name }}</a></li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <strong>No categories at present.</strong>
-        {% endif %}
-
-    </div>
-    <!--/span-->
-    <div class="span6">
-        <h2>Top Five Pages</h2>
-        {% if pages %}
-        <ul>
-            {% for page in pages %}
-            <li><a href="{{ page.url}}">{{ page.title }}</a> - {{ page.category }} ({{ page.views }} view(s))</li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <strong>No pages at present.</strong>
-        {% endif %}
-
-    </div>
-    <!--/span-->
-</div>
-<!--/row-->
 {% endblock %}

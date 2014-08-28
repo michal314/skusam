@@ -18,9 +18,13 @@ class PageAdmin(admin.ModelAdmin):
 # 	content=forms.CharField(widget=forms.Textarea)
 class AdminPost(admin.ModelAdmin):
    fields=['title','content','author']
+class AdminArticle(admin.ModelAdmin):
+   fields=['title','content','author','category']
+   list_display=('title','category')
+
       # forms=FormPost'
 
-admin.site.register(Article, AdminPost)
+admin.site.register(Article, AdminArticle)
 admin.site.register(Tag)
 admin.site.register(Address)
 admin.site.register(Contact)

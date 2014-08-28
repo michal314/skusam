@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^rango/account/address/edit/(?P<pk>\d+)/$', views.UpdateUseraddressView.as_view(),name='address-edit',),
     url(r'^rango/account/password/edit/(?P<pk>\d+)/$', views.UpdatePasswordView.as_view(),name='password-edit',),
     url(r'^rango/register/$', views.register, name='register'),
+    url(r'^rango/study/(?P<category_name_url>\w+)/article/(?P<pk>\d+)/$',views.ArticleDetailuserView.as_view(),name='article-view'),
     url(r'^rango/logout/$', views.user_logout, name='logout'),
     # url(r'^$', 'mypomoc.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
@@ -50,5 +51,3 @@ urlpatterns = patterns('',
     # url(r'/services/$', view_services_method, 'services_url_name'),
     # url(r'/contact/$', view_contact_method, 'contact_url_name'),
 )
-
-

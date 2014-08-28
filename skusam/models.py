@@ -65,6 +65,7 @@ class Tag(models.Model):
 
 class Article(models.Model):
   'Article model'
+  category = models.ForeignKey(Category)
   author=models.ForeignKey(User)
   pub_date=models.DateTimeField('published date',auto_now_add=True)
   title=models.CharField('Title',max_length=2**6)

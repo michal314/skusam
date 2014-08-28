@@ -333,6 +333,13 @@ class ArticleDetailView(DetailView):
          context['tags']=Tag.objects.all()
          return context
 
+class ArticleDetailuserView(DetailView):
+       model=Article
+       template_name='article_detail.html'
+       def get_context_data(self,**kwargs):
+         context=super(ArticleDetailuserView,self).get_context_data(kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
+         context['action'] = reverse('article-view',kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
+         return context
 
 
 class TagDetailView(DetailView):

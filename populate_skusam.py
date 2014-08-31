@@ -1,6 +1,16 @@
 import os
 
 def populate():
+    
+
+    python_cat = add_cat('Set theory')
+
+    python_cat = add_cat('Differential equations')
+
+    python_cat = add_cat('Statistic')
+
+    python_cat = add_cat('Logic')
+
     python_cat = add_cat('Algebra')
 
     add_page(cat=python_cat,

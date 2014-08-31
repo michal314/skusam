@@ -2,27 +2,37 @@
 
 {% block body_block %}
     <div class="hero-unit">
-        <h1>{{ category_name }}</h1>
+      <h1>{{ category_name }}</h1>
+
+
+        
     </div>
-           Articles
+        If you have a permission to add new article then you can do it :)
+             <ul>  
+          <form action="{% url "article-new"  category_name_url=category.name %}" method='get'>
+                <button type='submit' class="btn btn-primary"> add new article </button>
+          </form>
+        </ul>   
+     <ul> 
+           {% if category.article_set.all %}   <h3>Articles</h3>
            <ul>
                 {% for artic in category.article_set.all %}
-                <li><a href="{% url "article-view" pk=artic.id category_name_url=category.name %}">{{ artic.title }}</a></li>
+                <li><a href="{% url "article-view" pk=artic.id  category_name_url=category.name %}">{{ artic.title }}</a></li>
                 {% endfor %}
             </ul>
-       
-        {% if category %}
-            {% if pages %} Pages
+            {% else %}
+                <strong>No articles currently in {{category_name}}.</strong>
+            {% endif %}
+     </ul>
+     <ul>        
+            {% if pages %} <h3>Pages</h3>
             <ul>
                 {% for page in pages %}
                 <li><a href="{{ page.url }}">{{ page.title }}</a></li>
                 {% endfor %}
             </ul>
             {% else %}
-                <strong>No pages currently in category.</strong>
+                <strong>No pages currently in {{category_name}}.</strong>
             {% endif %}
-        {% else %}
-            The specified category {{ category_name }} does not exist!
-        {% endif %}
-    
+     </ul>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from skusam.models import UserProfile
+from skusam.models import UserProfile, Article
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -18,3 +18,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['website', 'picture']
+
+class Novyclanok(forms.ModelForm):
+    class Meta:
+      model= Article
+      exclude=('title','content','category')       

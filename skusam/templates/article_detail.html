@@ -6,12 +6,27 @@
     </div>
 
 
+	
 
-<article> Important tags of article:
+<ul>
 
-<footer>
+<form action="{% url "article-delete"  pk=article.id category_name_url=article.category.name  %}" method='get'>
+<button type='submit' class="btn btn-primary"> delete article </button>
+</form>
+
+<form action="{% url "article-edit"  pk=article.id  category_name_url=article.category.name %}" method='get'>
+<button type='submit' class="btn btn-primary"> edit article </button>
+</form>
+</ul> 
+
+
+
+<article> 
+
+<footer> 
 		<ul>{{article.content}}</ul>
 		{{article.pub_date}} 
+
 		 by user <a href="{% url 'view_author' article.author.username %}">{{article.author.username}}</a>
 	</footer>
 

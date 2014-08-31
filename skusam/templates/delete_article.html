@@ -1,16 +1,23 @@
 
+{%extends "base.html" %}
+{% block body_block %}
+<div class="hero-unit">
 
-{% block content %}
+  <font face='arial'  color='royalblue'><h3>Delete Article</h3> </font>
 
-<h1>Delete Article</h1>
+
+
 
 <p>Are you sure you want to delete the article {{ article.title }}?</p>
 
-<form action="{% url "article-delete" pk=article.id %}" method="POST">
+<form action="{% url "article-delete" pk=article.id category_name_url=article.category.name   %}" method="POST">
   {% csrf_token %}
 
-  <input type="submit" value="Yes, delete." />
-  <a href="{% url "profil-list" %}">No, cancel.</a>
-</form>
 
+
+<button type="submit" class="btn btn-primary"> "Yes, delete." </button>
+  
+  <a href="{% url "studypage" %}">No, cancel.</a>
+</form>
+</div>
 {% endblock %}

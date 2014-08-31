@@ -1,15 +1,24 @@
-{% if article.id %}
-<h1>Edit Article</h1>
-{% else %}
-<h1>Add Article</h1>
-{% endif %}
+{%extends "base.html" %}
+{% block body_block %}
 
-<form action="{{ action }}" method="POST">
-  {% csrf_token %}
-  <ul>
-    {{ form.as_ul }}
-  </ul>
-  <input id="save_article" type="submit" value="Save" author=user/>
+<div class="hero-unit">
+  <font face='arial'  color='royalblue'>
+  	<h3> {% if article.id %}
+  	          Edit Article 
+         {% else %}
+              You can add new article now 
+         {% endif %} 
+         
+    </h3> 
+  </font>
+
+<form action="{{ action }}"   method="POST">
+    {% csrf_token %}
+     <ul>   
+       {{ form.as_ul }} 
+     </ul>
+  <button id="save_article"  class="btn btn-primary"  type="submit"> save article </button>
 </form>
-
-<a href="{% url "profil-list" %}">back to list</a>
+   <a href="/rango/study/{{ category.url }}">back to study</a>
+</div>
+{% endblock %}

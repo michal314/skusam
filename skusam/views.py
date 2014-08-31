@@ -6,9 +6,10 @@ from django.views.generic import CreateView,UpdateView,ListView,UpdateView,Delet
 from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate, login, logout
-from skusam.forms import UserForm,UserProfileForm
+from skusam.forms import UserForm,UserProfileForm, Novyclanok
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.forms import ModelForm
 # @login_required
 # def restricted(request):
 #     return HttpResponse("Since you're logged in, you can see this text!")
@@ -337,7 +338,7 @@ class ArticleDetailuserView(DetailView):
        model=Article
        template_name='article_detail.html'
        def get_context_data(self,**kwargs):
-         context=super(ArticleDetailuserView,self).get_context_data(kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
+         context=super(ArticleDetailuserView,self).get_context_data(**kwargs)
          context['action'] = reverse('article-view',kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
          return context
 
@@ -363,7 +364,12 @@ class ArticleDeleteView(DeleteView):
     template_name = 'delete_article.html'
 
     def get_success_url(self):
-        return reverse('profil-list') 
+        return reverse('studypage') 
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(ArticleDeleteView, self).get_context_data(**kwargs)
+    #     context['action'] = reverse('article-delete',kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
+    #     return context 
 
 
 class ArticleUpdateView(UpdateView):
@@ -373,26 +379,45 @@ class ArticleUpdateView(UpdateView):
     fields = ['title','content']
 
     def get_success_url(self):
-        return reverse('profil-list') 
+        return reverse('studypage') 
 
     def get_context_data(self, **kwargs):
         context = super(ArticleUpdateView, self).get_context_data(**kwargs)
-        context['action'] = reverse('article-edit',kwargs={'pk': self.get_object().id})
+        context['action'] = reverse('article-edit',kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
         return context
 
 class ArticleCreateView(CreateView):
 
     model = Article
     template_name = 'edit_article.html'
-    fields = ['author','title','content']
-    #fields = ['first_name', 'last_name','phone']
-    def get_success_url(self):
-        return reverse('profil-list')
+    def form_valid(self,form):
+        user=self.request.user
+        form.instance.author=user
+        return super(ArticleCreateView,self).form_valid(form)
 
+    # def form_valid(self,form):
+    #     self.object=form.save(commit=False)
+    #     self.object.author=self.request.user
+    #     self.object.save()
+    #     return super(ModelFormMixin,self).form_valid(form)
+
+
+    #queryset=Article.objects.all()
+    
+    #initial={category:'Analysis'} 
+    #fields = ['first_name', 'last_name','phone']
+    # def get_initial(self):
+    #       return {'author':self.request.user}
+    fields = ['title','content','category']
+
+    def get_success_url(self):
+       return reverse('studypage') 
     def get_context_data(self, **kwargs):
         context = super(ArticleCreateView, self).get_context_data(**kwargs)
-        context['action'] = reverse('article-new')
+        context['action'] = reverse('article-new',kwargs={'category_name_url':Category.objects.get(id=3)})
         return context
+     #def get_initial(self):
+      
 
 class UpdateUserView(UpdateView):
 
@@ -411,7 +436,7 @@ class UpdateUseraddressView(UpdateView):
 
     model =  Address
     template_name = 'address_edit.html'
-    fields = ['address','city','zip','state']
+    #fields = ['address','city','zip','state']
     def get_success_url(self):
         return reverse('personalprofil-list',kwargs={'pk': self.get_object().id}) 
 

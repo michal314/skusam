@@ -6,7 +6,7 @@
 	{% if user.is_authenticated %}
 	<h1> Hello {{ user.username }}! </h1>
   <li><a href="{% url "personalprofil-list"  pk=user.id  %}">My personal profile</a> </li> 
-  <li><a href="/rango/account/userprofile/">User profile</a></li> 
+  <li><a href="{% url "userprofile-list" pk=user.id%}">User profile</a></li> 
   <li><a href="{% url "password-edit"  pk=user.id  %}">Change password</a> </li> 
   <li><a href="{% url "usergroups-list"  pk=user.id  %}">Groups</a></li> 
   <li><a href="{% url "accountbalance-list"  pk=user.id  %}">Account balance</a> </li> 

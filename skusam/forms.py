@@ -1,5 +1,5 @@
 from django import forms
-from skusam.models import UserProfile, Article
+from skusam.models import UserProfile, Article, Page
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -19,7 +19,12 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['website', 'picture']
 
-class Novyclanok(forms.ModelForm):
+
+class PageForm(forms.ModelForm):
+    title=forms.CharField(max_length=128,help_text="Please enter the title of the page")
+    url=forms.URLField(max_length=200,help_text="Please enter the url of the page")  
+    views=forms.IntegerField(widget=forms.HiddenInput(),initial=0)
+   
     class Meta:
-      model= Article
-      exclude=('title','content','category')       
+       model=Page
+       fields=('title','url','views')        

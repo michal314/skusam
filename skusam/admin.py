@@ -1,5 +1,5 @@
 from django.contrib import admin
-from skusam.models import Article, Tag,Address, Contact, Category, Page
+from skusam.models import Article, Tag,Address, Contact, Category, Page, UserProfile
 from django import forms
 # class ChoiceInline(admin.TabularInline):
 # 	model=Choice
@@ -30,3 +30,4 @@ admin.site.register(Address)
 admin.site.register(Contact)
 admin.site.register(Category)
 admin.site.register(Page,PageAdmin)
+admin.site.register(UserProfile)

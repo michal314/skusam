@@ -5,7 +5,7 @@ def populate():
 
     python_cat = add_cat('Set theory')
 
-    python_cat = add_cat('Differential equations')
+   
 
     python_cat = add_cat('Statistic')
 

@@ -26,7 +26,7 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     info=models.TextField()
     website = models.URLField(blank=True)
-
+    
     #picture = models.ImageField(upload_to='profile_images', blank=True)
 
     # Override the __unicode__() method to return out something meaningful!

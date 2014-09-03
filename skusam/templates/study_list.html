@@ -3,6 +3,19 @@
 {% block body_block %}
 <div class="hero-unit">
 
+<h3>We are preparing  a lot of study materials ...</h3>
+</div>
+
+This section is devoted to the knowledge of secondary and higher mathematics in category as Algebra, Analysis, Geometry, Logic, Set theory, Statistic.
+   {% for category in categories %}
+       <font face='arial'  color='royalblue'><h2>{{ category.name }}</h2> </font> - some info about me, some info about me,some info about me,some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me. 
+   {% endfor %}
+
+{% endblock %}
+
+{% block sidebar %}
+<UL class="nav nav-list">
+	<LI class="nav-header"><h3>Study list </h3></LI>
 {% if categories %}
             <ul>
                 {% for category in categories %}
@@ -14,6 +27,5 @@
        {% else %}
             <strong>There are no categories present.</strong>
        {% endif %}
-</div>
-
+</UL>	
 {% endblock %}

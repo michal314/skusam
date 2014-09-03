@@ -7,29 +7,32 @@
 <font face='arial'  color='royalblue'><h2>User profile</h2> </font>
 
     
-    {% if userprofile.info %}
-        <p>Info about me: {{ userprofile.website }}</p>
+    {% if user.userprofile.info %}
+        <p><strong>Info about me:</strong> {{ user.userprofile.info }}</p>
 
     {% else %}   
         <p>Info about me:</p>
     {% endif %}
   
-    {% if userprofile.website %}
-        <p>Website: <a href="{{ userprofile.website }}">{{ userprofile.website }}</a></p>
+    {% if user.userprofile.website %}
+        <p><strong>Website:</strong> <a href="{{ user.userprofile.website }}">{{ user.userprofile.website }}</a></p>
 
     {% else %}   
         <p>Website:</p>
 
     {% endif %}
         
-    {% if userprofile.picture %}
-            <img src="{{ userprofile.picture.url }}"  />
+    {% if user.userprofile.picture %}
+            <img src="{{ user.userprofile.picture.url }}"  />
 
     {% else %}   
         <p>Picture:</p>
     {% endif %}
-
-      
+ <ul>
+    <form action="{% url "userprofile-edit"  pk=user.id  %}" method='get'>
+       <button type='submit' class="btn btn-primary"> edit user profile </button>
+    </form>
+ </ul>
        
 <a href="{% url "frontpage"   %}">back to my account</a>
     

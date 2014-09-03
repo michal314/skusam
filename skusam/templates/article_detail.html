@@ -8,28 +8,51 @@
 
 	
 
-<ul>
-
-<form action="{% url "article-delete"  pk=article.id category_name_url=article.category.name  %}" method='get'>
-<button type='submit' class="btn btn-primary"> delete article </button>
-</form>
-
-<form action="{% url "article-edit"  pk=article.id  category_name_url=article.category.name %}" method='get'>
-<button type='submit' class="btn btn-primary"> edit article </button>
-</form>
-</ul> 
 
 
 
 <article> 
 
 <footer> 
-		<ul>{{article.content}}</ul>
-		{{article.pub_date}} 
-
-		 by user <a href="{% url 'view_author' article.author.username %}">{{article.author.username}}</a>
-	</footer>
+		<p>{{article.content}}</p>
+	
+</footer>
 
 
 </article>
 {% endblock  %}
+{% block sidebar %}
+<UL class="nav nav-list"></UL>
+  <LI class="nav-header"><h3>Useful info </h3></LI>
+  <ul>Category: <a href="/rango/study/{{ article.category.name }}/">{{ article.category.name }}</a></ul>
+  <ul>Author: <a href="{% url 'view_author' article.author.username %}">{{article.author.username}}</a></ul>
+  <ul>Created: {{article.pub_date.date}}</ul>
+  <ul>Last update: </ul>
+       
+<UL class="nav nav-list"></UL>
+ <LI class="nav-header"><h3>Options </h3></LI>
+ 
+<ul>  {% for groups in user.groups.filter %}
+        {% for perm in groups.permissions.filter %}
+           {% if 'Can delete article' == perm.name %}
+<h4><strong>with permission </strong></h4> 
+
+<form action="{% url "article-delete"  pk=article.id category_name_url=article.category.name  %}" method='get'>
+<button type='submit' class="btn btn-primary"> delete article </button>
+</form>
+
+
+         {% endif%}
+                    {% if 'Can change article' == perm.name %}
+<h4><strong>with permission </strong></h4> 
+<form action="{% url "article-edit"  pk=article.id  category_name_url=article.category.name %}" method='get'>
+<button type='submit' class="btn btn-primary"> edit article </button>
+</form>
+
+{% endif%}
+      {% endfor %}
+  {% endfor %}
+
+</ul>
+
+{% endblock %}

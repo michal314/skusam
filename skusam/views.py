@@ -1,15 +1,16 @@
 from django.shortcuts import render,render_to_response,HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from skusam.models import Address,Article, Tag,Contact,Category,Page
+from skusam.models import Address,Article, Tag,Contact,Category,Page,UserProfile
 from django.views.generic import CreateView,UpdateView,ListView,UpdateView,DeleteView,DetailView
 
 from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate, login, logout
-from skusam.forms import UserForm,UserProfileForm, Novyclanok
+from skusam.forms import UserForm,UserProfileForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 # @login_required
 # def restricted(request):
 #     return HttpResponse("Since you're logged in, you can see this text!")
@@ -153,8 +154,10 @@ def index(request):
 
 
 def category(request, category_name_url):
-    # Request our context from the request passed to us.
+    
+        # Request our context from the request passed to us.
     context = RequestContext(request)
+    
 
     # Change underscores in the category name to spaces.
     # URLs don't handle spaces well, so we encode them as underscores.
@@ -184,6 +187,22 @@ def category(request, category_name_url):
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
         pass
+
+    article_list=Article.objects.filter(category=category).order_by('title')
+    paginator=Paginator(article_list, 10)
+    page=request.GET.get('page')
+    try:
+        articlesss=paginator.page(page)
+    except PageNotAnInteger:
+        articlesss=paginator.page(1)
+    except EmptyPage:
+        articless=paginator.page(paginator.num_pages) 
+
+
+    
+    
+    context_dict['articlesss']=articlesss  
+    context_dict['article_list']=article_list[0:5] 
 
     # Go render the response and return it to the client.
     return render_to_response('category.html', context_dict, context)
@@ -319,6 +338,11 @@ class UserListView(ListView):
     model = User
     template_name = 'profil_info.html'
 
+class UserprofileListView(ListView):
+    model = User
+    template_name = 'userprofile.html'
+
+
 
 class UsergroupsListView(ListView):
     model = User
@@ -386,6 +410,74 @@ class ArticleUpdateView(UpdateView):
         context['action'] = reverse('article-edit',kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
         return context
 
+ 
+
+class CategoryDetailView(DetailView):
+    model=Category
+    slug_field = 'id'
+    #paginate_by=3
+    template_name='categoryyy.html' 
+   
+
+    # Change underscores in the category name to spaces.
+    # URLs don't handle spaces well, so we encode them as underscores.
+    # We can then simply replace the underscores with spaces again to get the name.
+    # context = RequestContext(request)
+    # category_name = category_name_url.replace('_', ' ')
+
+    # # Create a context dictionary which we can pass to the template rendering engine.
+    # # We start by containing the name of the category passed by the user.
+    # context_dict = {'category_name': category_name}
+
+    # try:
+    #     # Can we find a category with the given name?
+    #     # If we can't, the .get() method raises a DoesNotExist exception.
+    #     # So the .get() method returns one model instance or raises an exception.
+    #     category = Category.objects.get(name=category_name)
+
+    #     # Retrieve all of the associated pages.
+    #     # Note that filter returns >= 1 model instance.
+    #     pages = Page.objects.filter(category=category)
+
+    #     # Adds our results list to the template context under name pages.
+    #     context_dict['pages'] = pages
+    #     # We also add the category object from the database to the context dictionary.
+    #     # We'll use this in the template to verify that the category exists.
+    #     context_dict['category'] = category
+    # except Category.DoesNotExist:
+    #     # We get here if we didn't find the specified category.
+    #     # Don't do anything - the template displays the "no category" message for us.
+    #     pass
+
+    # Go render the response and return it to the client.
+   # return render_to_response('category.html', context_dict, context)
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        context['action'] = reverse('article-view-category',kwargs={'slug': self.get_object().id})
+        
+        return context 
+
+class ArticleStudyListView(ListView): 
+   model=Article
+   template_name='article_view_pagin.html' 
+   paginate_by=5
+   # contact_list=Category.article_set.all() 
+   # paginator = Paginator(contact_list, 25) # Show 25 contacts per page
+
+   # page = request.GET.get('page')
+   # try:
+   #  contacts = paginator.page(page)
+   # except PageNotAnInteger:
+   #  # If page is not an integer, deliver first page.
+   #  contacts = paginator.page(1)
+   # except EmptyPage:
+   #  # If page is out of range (e.g. 9999), deliver last page of results.
+   #     contacts = paginator.page(paginator.num_pages)
+
+   #return render_to_response('article_view_pagin.html', {"contacts": contacts})
+
+
 class ArticleCreateView(CreateView):
 
     model = Article
@@ -419,6 +511,43 @@ class ArticleCreateView(CreateView):
      #def get_initial(self):
       
 
+class UpdateUserprofileView(UpdateView):
+
+    model =  UserProfile
+    template_name = 'userprofile_edit.html'
+    fields = ['info', 'website']
+    def get_success_url(self):
+        return reverse('userprofile-list',kwargs={'pk': self.get_object().user.id}) 
+    def form_valid(self,form):
+        user=self.request.user
+        form.instance.user=user
+        return super(UpdateUserprofileView,self).form_valid(form)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(UpdateUserprofileView, self).get_context_data(**kwargs)
+    #     context['action'] = reverse('userprofile-edit',kwargs={'pk': self.get_object().id})
+    #     return context   
+
+
+class UpdateUseraddressView(UpdateView):
+
+    model =  Address
+    template_name = 'address_edit.html'
+    fields=['address','city','state','zip']
+    def form_valid(self,form):
+        user=self.request.user
+        form.instance.user=user
+        return super(UpdateUseraddressView,self).form_valid(form)
+
+    #fields = ['address','city','zip','state']
+    def get_success_url(self):
+        return reverse('personalprofil-list',kwargs={'pk': self.get_object().user.id}) 
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(UpdateUseraddressView, self).get_context_data(**kwargs)
+    #     context['action'] = reverse('address-edit',kwargs={'pk': self.get_object().id})
+    #     return context   
+
 class UpdateUserView(UpdateView):
 
     model =  User
@@ -431,20 +560,6 @@ class UpdateUserView(UpdateView):
         context = super(UpdateUserView, self).get_context_data(**kwargs)
         context['action'] = reverse('personalprofil-edit',kwargs={'pk': self.get_object().id})
         return context    
-
-class UpdateUseraddressView(UpdateView):
-
-    model =  Address
-    template_name = 'address_edit.html'
-    #fields = ['address','city','zip','state']
-    def get_success_url(self):
-        return reverse('personalprofil-list',kwargs={'pk': self.get_object().id}) 
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(UpdateUseraddressView, self).get_context_data(**kwargs)
-    #     context['action'] = reverse('address-edit',kwargs={'pk': self.get_object().id})
-    #     return context   
-
 
 
 class UpdatePasswordView(UpdateView):

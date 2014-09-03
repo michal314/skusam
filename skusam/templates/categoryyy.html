@@ -1,0 +1,76 @@
+{%extends 'base.html' %}
+
+{% block body_block %}
+    <div class="hero-unit">
+      <h1>{{ category.name }}</h1>
+    </div>
+        
+     <ul> 
+        <h2>Articles</h2> 
+         <h4><strong>If you have a permission to add new article you can do it :)</strong></h4>
+          <ul>  <ul>
+            <form action="{% url "article-new"  category_name_url=category.name %}" method='get'>
+              <button type='submit' class="btn btn-primary"> add new article </button>
+            </form>
+          </ul></ul>   
+           <a href="{% url "article-view-pagin"  %}">pozri</a>
+
+  </ul>
+              {% if category.article_set.all %}  bbggb
+              {%endif%} 
+               
+             {% for arti in article_list %}
+
+    <li>{{arti.title}} {{arti.author}} </li>
+
+          {% endfor %}
+
+{% if page_obj.has_previous %}
+  <a href= "?page={{ page_obj.previous_page_number }}">previous page &lt;&lt; </a>
+{% endif %}
+ 
+<span class="current">
+  &nbsp;Page {{ page_obj.number }} of {{paginator.num_pages }}
+</span>
+ 
+{% if page_obj.has_next %}
+  <a href="?page={{ page_obj.next_page_number }}"> &gt;&gt; next page</a>
+{% endif %}
+
+        
+      
+      
+
+  
+
+     <ul>        
+            {% if pages %} <h2>Useful links</h2>
+            <ul>
+                {% for page in pages %}
+                <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>No pages currently in category: {{category_name}}.</strong>
+            {% endif %}
+     </ul>
+{% endblock %}
+{% block sidebar %}
+<UL class="nav nav-list">
+  <LI class="nav-header"><h3>Top Articles </h3></LI>
+       
+        {% if category.article_set.all %}  
+          <ul> 
+                {% for artic in category.article_set.all %}
+                <li><a href="{% url "article-view" pk=artic.id  category_name_url=category.name %}">{{ artic.title }}</a></li>
+                {% endfor %}
+        </ul>
+        {% else %}
+        <strong>No article at present.</strong>
+        {% endif %}
+
+</UL>
+  
+
+
+{% endblock %}

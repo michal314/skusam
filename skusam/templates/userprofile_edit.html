@@ -1,0 +1,20 @@
+{%extends "base.html" %}
+{% block body_block %}
+<div class="hero-unit">
+  <font face='arial'  color='royalblue'><h3>Edit User profile</h3> </font>
+
+<form action="{{ action }}" method="POST">
+  {% csrf_token %}
+  <ul>
+    {{ form.as_ul }}
+  </ul>
+
+  <button id="save_userprofile" type="submit" class="btn btn-primary"> save User profile</button>
+</form>  
+
+</form>
+
+
+<a href="{% url "userprofile-list" pk=user.id  %}">back to User profile </a>
+</div>
+{% endblock %}

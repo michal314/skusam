@@ -8,14 +8,14 @@
 
 This section is devoted to the knowledge of secondary and higher mathematics in category as Algebra, Analysis, Geometry, Logic, Set theory, Statistic.
    {% for category in categories %}
-       <font face='arial'  color='royalblue'><h2>{{ category.name }}</h2> </font> - some info about me, some info about me,some info about me,some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me, some info about me. 
+       <font face='arial'  color='royalblue'><h2>{{ category.name }}</h2> </font> {{category.info}}
    {% endfor %}
 
 {% endblock %}
 
 {% block sidebar %}
 <UL class="nav nav-list">
-	<LI class="nav-header"><h3>Study list </h3></LI>
+	<LI class="nav-header"><h3>Branch's list </h3></LI>
 {% if categories %}
             <ul>
                 {% for category in categories %}
@@ -28,4 +28,17 @@ This section is devoted to the knowledge of secondary and higher mathematics in 
             <strong>There are no categories present.</strong>
        {% endif %}
 </UL>	
+{% endblock %}
+
+{% block sidebarr %}
+<UL class="nav nav-list"> </UL>
+  <LI class="nav-header"><h3>Search </h3></LI>
+<form action='' Method="post" enctype="multipart/form-data">
+Find branch with the following keyword: <BR>
+<BR>
+<INPUT TYPE="text" SIZE="10" MAXLENGTH="8"> <BR> 
+<UL><INPUT TYPE="submit" VALUE="Find"></UL>
+ 
+</form>
+
 {% endblock %}

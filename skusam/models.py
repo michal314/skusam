@@ -6,7 +6,8 @@ from django.core.urlresolvers import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=128, unique=True)
-
+    info=models.TextField(default='')
+    overview=models.TextField(default='')
     def __unicode__(self):
         return self.name
 
@@ -26,7 +27,9 @@ class UserProfile(models.Model):
     # The additional attributes we wish to include.
     info=models.TextField()
     website = models.URLField(blank=True)
-    
+    balance=models.IntegerField(default=0)
+
+
     #picture = models.ImageField(upload_to='profile_images', blank=True)
 
     # Override the __unicode__() method to return out something meaningful!
@@ -73,6 +76,7 @@ class Article(models.Model):
   #data=models.CharField('este neviem',max_length=2**6)
   pattern=re.compile(r'#(?P<title>\w+)')
   tags=models.ManyToManyField('Tag',blank=True)
+  voices=models.ManyToManyField('UserProfile',blank=True)
   
   def __unicode__(self):
      return '"{2}" at {1} by {0}'.format(self.author,self.pub_date,self.title)

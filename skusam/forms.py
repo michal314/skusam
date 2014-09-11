@@ -1,6 +1,6 @@
 from django import forms
 from skusam.models import UserProfile, Article, Page
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(help_text="Please enter a username.")
@@ -19,6 +19,11 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['website', 'picture']
 
+class UsergroupForm(forms.ModelForm):
+     
+     class Meta:
+         model=Group
+         fields=['name']
 
 class PageForm(forms.ModelForm):
     title=forms.CharField(max_length=128,help_text="Please enter the title of the page")

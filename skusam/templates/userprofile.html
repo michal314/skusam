@@ -35,11 +35,16 @@
  </ul>
        
 <a href="{% url "frontpage"   %}">back to my account</a>
-    
-
-
-    
-
-
+   
 </div>
+{% endblock %}
+
+{% block sidebar %}
+<UL class="nav nav-list"> 
+  <LI class="nav-header"><h3> info and questions</h3></LI>
+       <li>What is my "User profile"?</li>
+       <li>Is it visible for another users?</li>
+       <li>What is "Info about me"?</li>
+  </UL>  
+
 {% endblock %}

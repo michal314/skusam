@@ -4,16 +4,33 @@
     <div class="hero-unit">
       <h1>{{ category_name }}</h1>
     </div>
-        
+       
+ 
+     <ul> <h2>Overview </h2>
+      {{category.overview}}
+     </ul>
+
      <ul> 
-        <h2>Articles</h2> 
+        <h2>Register of Articles:</h2> 
          
           {% if category.article_set.all %}  
+          <table  border="5" width="80%"  cellpadding="2" >
+            <thead> 
+              <tr> 
+                <th> ID of Article </th> <th> Title of Article</th> <th> Author</th><th> Voices</th> 
+              </tr>
+            </thead> 
+            <tbody>
             {% for artic in articlesss%}
-            <li><a href="{% url "article-view" pk=artic.id  category_name_url=category.name %}">{{ artic.title }}</a>
-               
-            </li>
+            <tr>
+               <td><center>{{artic.id}}  </center></td>
+               <td><ul><a href="{% url "article-view" pk=artic.id  category_name_url=category.name %}">{{ artic.title }}</a> </ul></td>
+               <td> <center>{{artic.author}} </center></td>
+               <td> <center>{{artic.voices.count}} </center></td>
+            </tr>
             {% endfor %} 
+            </tbody>
+          </table>  
  
           <div class="pagination">
             <span class="step-links">
@@ -30,7 +47,7 @@
                {% endif %}
             </span>
            </div>
-                           
+                      
           {% else %}
              <strong>No articles currently in category: {{category_name}}.</strong>
           {% endif %}
@@ -58,7 +75,7 @@
         {% if category.article_set.all %}  
           <ul>  
                 {% for artic in article_list%}
-                <li><a href="{% url "article-view" pk=artic.id  category_name_url=category.name %}">{{ artic.title }} </a></li>
+                <li><a href="{% url "article-view" pk=artic.id  category_name_url=category.name %}">{{ artic.title }} </a> ({{artic.voices.count}})</li>
                 {% endfor %}
         </ul>
         {% else %}
@@ -86,6 +103,19 @@
  
 {% endfor %}
  
+ 
+{% endblock %}
+
+{% block sidebarr %}
+<UL class="nav nav-list"> </UL>
+  <LI class="nav-header"><h3>Search </h3></LI>
+<form action='' Method="post" >
   
+Find article with the keyword: <BR><BR>
+
+<INPUT TYPE="text" SIZE="10" MAXLENGTH="8"> <BR> 
+<UL><INPUT TYPE="submit" VALUE="Find"></UL>
+ 
+</form>
 
 {% endblock %}

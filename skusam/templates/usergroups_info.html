@@ -1,34 +1,40 @@
 {%extends "base.html" %}
 {% block body_block %}
 <div class="hero-unit">
-
-<font face='arial'  color='royalblue'><h2>My groups and actual permissions</h2> </font>
-
-     
-<ul> 
-    
-  {% for groups in user.groups.filter %}
-      <li class="user">group {{ groups }} </li> 
-      {% for perm in groups.permissions.filter %}
-        <ul class="user">{{ perm.name }}: </ul> 
-      {% endfor %}
-  {% endfor %}
- 
-
-</ul> 
-<ul> 
-<form action="{% url "groups-edit"  pk=user.id  %}" method='get'>
-<button type='submit' class="btn btn-primary"> You can change this  now! </button>
-</form>
-</ul> 
- 
-
-
-<a href="{% url "frontpage"   %}">back to my account</a>
+  <font face='arial'  color='royalblue'><h2>My personal permissions</h2> </font>
+   <ul> 
+      {% if user.user_permissions.filter %}
+         {% for perm in user.user_permissions.filter %}
+            <ul class="user">{{ perm.name }}: </ul> 	
+         {% endfor %}
+      {% else%}
+         <strong><li class="user">no personal permisions </li></strong>    
+      {% endif%}   
+   </ul> 
+ <font face='arial'  color='royalblue'><h2>My groups with actual permissions</h2> </font>
+  <ul>    
+     {% for groups in user.groups.filter %}
+         <strong><li class="user">group {{ groups }} </li> </strong>
+         {% for perm in groups.permissions.filter %}
+            <ul class="user">{{ perm.name }}: </ul> 
+         {% endfor %}
+     {% endfor %}
+  </ul>
+ <ul> 
+   <form action="{% url "usergroups-edit"  pk=user.id  %}" method='get'>
+     <button type='submit' class="btn btn-primary"> You can change this  now! </button>
+   </form>
+ </ul> 
+    <a href="{% url "frontpage"   %}">back to my account</a>
 </div>
-
-        
-     
-    
 {% endblock %}
 
+{% block sidebar %}
+<UL class="nav nav-list"> 
+  <LI class="nav-header"><h3> info and questions</h3></LI>
+       <li>Add permissions or group?</li>
+       <li>How long will it take?</li>
+       <li>How many will it cost?</li>
+  </UL>  
+
+{% endblock %}

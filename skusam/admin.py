@@ -19,7 +19,7 @@ class PageAdmin(admin.ModelAdmin):
 class AdminPost(admin.ModelAdmin):
    fields=['title','content','author']
 class AdminArticle(admin.ModelAdmin):
-   fields=['title','content','author','category']
+   fields=['title','content','author','category','voices']
    list_display=('title','category')
 
       # forms=FormPost'

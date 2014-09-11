@@ -3,10 +3,10 @@ from django.core.urlresolvers import reverse
 from skusam.models import Address,Article, Tag,Contact,Category,Page,UserProfile
 from django.views.generic import CreateView,UpdateView,ListView,UpdateView,DeleteView,DetailView
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 
 from django.contrib.auth import authenticate, login, logout
-from skusam.forms import UserForm,UserProfileForm
+from skusam.forms import UserForm,UserProfileForm,UsergroupForm
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
@@ -198,11 +198,18 @@ def category(request, category_name_url):
     except EmptyPage:
         articless=paginator.page(paginator.num_pages) 
 
-
-    
-    
+    article_list=Article.objects.filter(category=category)
+    pom=[]
+    for item in article_list:
+        count=item.voices.count()
+        novy=[count,item]
+        pom.append(novy)
+    pom.sort()
+    pom.reverse()
+   
     context_dict['articlesss']=articlesss  
-    context_dict['article_list']=article_list[0:5] 
+    
+    context_dict['article_list']=[item[1] for item in pom[0:5]] 
 
     # Go render the response and return it to the client.
     return render_to_response('category.html', context_dict, context)
@@ -334,6 +341,16 @@ def view_author(request,username):
     'shows author'
     return render(request,'front.html',{})
 
+
+
+
+# def article_voice(request):
+    
+#     artic=Article.objects.get(id=1)
+#     artic.voices=30
+#     artic.save()
+#     return render(request,'article_detail.html', {}) 
+
 class UserListView(ListView):
     model = User
     template_name = 'profil_info.html'
@@ -408,6 +425,27 @@ class ArticleUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ArticleUpdateView, self).get_context_data(**kwargs)
         context['action'] = reverse('article-edit',kwargs={'category_name_url':self.get_object().category.id,'pk': self.get_object().id})
+        return context
+
+
+class ArticleVoicesUpdateView(UpdateView):
+
+    model = Article
+    template_name = 'article_detail.html'
+    #fields = ['title','voices']
+
+
+    def get_success_url(self):
+ 
+        return reverse('article-view') 
+
+    def get_context_data(self, **kwargs):
+        context = super(ArticleVoicesUpdateView, self).get_context_data(**kwargs)
+        context['action'] = reverse('article-voices',kwargs={'category_name_url':self.get_object().id,'pk': self.get_object().id})
+        user=self.request.user
+        artic=Article.objects.get(id=self.get_object().id)
+        artic.voices.add(user.userprofile)
+        artic.save()
         return context
 
  
@@ -510,6 +548,23 @@ class ArticleCreateView(CreateView):
         return context
      #def get_initial(self):
       
+class UpdateUsergroupsView(UpdateView):
+    form_class=UsergroupForm
+    model =  User
+    template_name = 'usergroups_edit.html'
+    #fields = ['groups']
+    # def get_success_url(self):
+    #     return reverse('usergroups-list',kwargs={'pk': self.get_object().id}) 
+    # def form_valid(self,form):
+    #     user=self.request.user
+    #     form.instance.user=user
+    #     return super(UpdateUsergroupsView,self).form_valid(form)
+    # def form_valid(self,form):
+    #     user=self.request.user
+    #     form.instance.user=user
+    #     return super(UpdateUserprofileView,self).form_valid(form)
+
+
 
 class UpdateUserprofileView(UpdateView):
 
@@ -550,7 +605,7 @@ class UpdateUseraddressView(UpdateView):
 
 class UpdateUserView(UpdateView):
 
-    model =  User
+    model =  UserForm
     template_name = 'profil_edit.html'
     fields = ['first_name', 'last_name','email']
     def get_success_url(self):
